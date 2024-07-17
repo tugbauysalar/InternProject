@@ -1,5 +1,9 @@
 
+using AutoMapper;
+using InternProject.Application.Mapping;
+using InternProject.Application.Services;
 using InternProject.Persistence;
+using InternProject.Persistence.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +14,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddAutoMapper(typeof(MapProfile));
+
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(
