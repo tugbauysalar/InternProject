@@ -1,4 +1,6 @@
+
 using InternProject.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("InternProject.Persistence")));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
