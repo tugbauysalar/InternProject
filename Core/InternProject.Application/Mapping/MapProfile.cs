@@ -13,9 +13,8 @@ namespace InternProject.Application.Mapping
     {
         public MapProfile() 
         {
-            CreateMap<User, UserDto>().ReverseMap();
-            CreateMap<User, CreateUserDto>().ReverseMap();
-            CreateMap<User, UpdateUserDto>().ReverseMap();
+            CreateMap<User, UserDto>();
+            CreateMap<User, CreateUserDto>();
         }
     }
 }

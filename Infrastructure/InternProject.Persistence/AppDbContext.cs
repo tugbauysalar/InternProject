@@ -13,6 +13,7 @@ public class AppDbContext : IdentityDbContext<User, Role, string>
     }
 
     public DbSet<Education> Educations { get; set; }
+    public DbSet<Team> Teams { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
