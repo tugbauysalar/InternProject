@@ -26,5 +26,17 @@ namespace InternProject.API.Controllers
             }
             return CreateIActionResult(await _userService.CreateUserAsync(createUserDto));
         }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser(string id, UserDto userDto)
+        {
+            return CreateIActionResult(await _userService.UpdateUserAsync(id, userDto));
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            return Ok(await _userService.DeleteUserAsync(id));
+        }
     }
 }
