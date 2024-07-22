@@ -64,7 +64,7 @@ namespace InternProject.Persistence.Services
             return "Kullanıcı silindi!";
         }
 
-        public async Task<CustomResponseDto<UserDto>> UpdateUserAsync(string id, UserDto userDto)
+        public async Task<CustomResponseDto<UserDto>> UpdateUserAsync(string id, UpdateUserDto userDto)
         {
             var user = await _manager.FindByIdAsync(id);
             if (user == null)

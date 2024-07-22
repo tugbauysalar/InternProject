@@ -13,5 +13,6 @@ namespace InternProject.Application.DTOs
         public string Email { get; set; }
         public string NameSurname { get; set; }
         public string ConfirmPassword { get; set; }
+        public List<string> Skills { get; set; }
     }
 }

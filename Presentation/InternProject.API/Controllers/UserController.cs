@@ -28,8 +28,14 @@ namespace InternProject.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateUser(string id, UserDto userDto)
+        public async Task<IActionResult> UpdateUser(string id, UpdateUserDto userDto)
         {
+            var validationResult = new UpdateUserDtoValidator().Validate(userDto);
+            if (!validationResult.IsValid)
+            {
+                var errors = validationResult.Errors.Select(x => x.ErrorMessage).ToList();
+                return BadRequest(new { errors });
+            }
             return CreateIActionResult(await _userService.UpdateUserAsync(id, userDto));
         }
 
