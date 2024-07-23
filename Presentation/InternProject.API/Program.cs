@@ -52,6 +52,8 @@ builder.Services.AddIdentity<User, IdentityRole>()
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
 builder.Services.AddAutoMapper(typeof(MapProfile));
 
 
