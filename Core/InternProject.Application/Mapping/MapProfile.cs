@@ -15,6 +15,7 @@ namespace InternProject.Application.Mapping
         {
             CreateMap<User, UserDto>();
             CreateMap<User, CreateUserDto>();
+            CreateMap<User, UserLoginDto>();
         }
     }
 }

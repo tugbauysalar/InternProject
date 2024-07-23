@@ -5,6 +5,7 @@ using InternProject.Application.Services;
 using InternProject.Domain.Entities;
 using InternProject.Persistence;
 using InternProject.Persistence.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -16,8 +17,29 @@ builder.Services.AddControllers().AddFluentValidation(options =>
     options.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 });
 
+builder.Services.Configure<CustomTokenOption>(builder.Configuration.GetSection("Token Option"));
 
 // Add services to the container.
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opts =>
+{
+    var tokenOption = builder.Configuration.GetSection("TokenOption").Get<CustomTokenOption>();
+    opts.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+    {
+        ValidIssuer = tokenOption.Issuer,
+        ValidAudience = tokenOption.Audience,
+        IssuerSigningKey = SignService.GetSymmetricSecurityKey(tokenOption.SecurityKey),
+
+        ValidateIssuerSigningKey = true,
+        ValidateAudience = true,
+        ValidateIssuer = true,
+        ValidateLifetime = true,
+
+    };
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -29,6 +51,7 @@ builder.Services.AddIdentity<User, IdentityRole>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddAutoMapper(typeof(MapProfile));
 
 
