@@ -37,7 +37,7 @@ namespace InternProject.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("InternProject.Domain.Entities.Education", b =>
@@ -59,7 +59,7 @@ namespace InternProject.Persistence.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Educations");
+                    b.ToTable("Educations", (string)null);
                 });
 
             modelBuilder.Entity("InternProject.Domain.Entities.Role", b =>
@@ -106,7 +106,7 @@ namespace InternProject.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teams");
+                    b.ToTable("Teams", (string)null);
                 });
 
             modelBuilder.Entity("InternProject.Domain.Entities.User", b =>
@@ -203,7 +203,7 @@ namespace InternProject.Persistence.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("UserRefreshToken");
+                    b.ToTable("UserRefreshToken", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
