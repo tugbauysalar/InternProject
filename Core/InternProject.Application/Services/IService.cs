@@ -11,5 +11,7 @@ namespace InternProject.Application.Services
     {
         IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression);
         Task AddAsync(TEntity entity);
+        Task DeleteAsync(TEntity entity);
+        Task<TEntity> GetByIdAsync(int id);
     }
 }

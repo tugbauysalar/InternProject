@@ -23,7 +23,7 @@ namespace InternProject.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("InternProject.Domain.Entities.Education", b =>
+            modelBuilder.Entity("InternProject.Domain.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -36,6 +36,28 @@ namespace InternProject.Persistence.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("InternProject.Domain.Entities.Education", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Educations");
                 });
@@ -290,6 +312,17 @@ namespace InternProject.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("InternProject.Domain.Entities.Education", b =>
+                {
+                    b.HasOne("InternProject.Domain.Entities.Category", "Category")
+                        .WithMany("Educations")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("InternProject.Domain.Entities.User", b =>
                 {
                     b.HasOne("InternProject.Domain.Entities.Team", "Team")
@@ -348,6 +381,11 @@ namespace InternProject.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("InternProject.Domain.Entities.Category", b =>
+                {
+                    b.Navigation("Educations");
                 });
 
             modelBuilder.Entity("InternProject.Domain.Entities.Team", b =>

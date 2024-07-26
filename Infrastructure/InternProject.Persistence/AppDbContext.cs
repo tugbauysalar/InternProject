@@ -11,7 +11,7 @@ public class AppDbContext : IdentityDbContext<User, Role, string>
     {
 
     }
-
+    public DbSet<Category> Categories { get; set; }
     public DbSet<Education> Educations { get; set; }
     public DbSet<Team> Teams { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)

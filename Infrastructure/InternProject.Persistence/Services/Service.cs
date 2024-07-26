@@ -25,6 +25,16 @@ namespace InternProject.Persistence.Services
             await _dbSet.AddAsync(entity);
         }
 
+        public async Task DeleteAsync(TEntity entity)
+        {
+            _dbSet.Remove(entity);
+            await _appDbContext.SaveChangesAsync();
+        }
+        public async Task<TEntity> GetByIdAsync(int id)
+        {
+            return await _dbSet.FindAsync(id);
+        }
+
         public IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression)
         {
             return _dbSet.Where(expression);
