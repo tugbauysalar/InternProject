@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using InternProject.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace InternProject.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240730114850_mig")]
+    partial class mig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,19 +132,18 @@ namespace InternProject.Persistence.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("LeadName")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("TeamLeadId")
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("TeamLeadId");
 
                     b.ToTable("Teams");
                 });
@@ -360,22 +362,11 @@ namespace InternProject.Persistence.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("InternProject.Domain.Entities.Team", b =>
-                {
-                    b.HasOne("InternProject.Domain.Entities.User", "TeamLead")
-                        .WithMany()
-                        .HasForeignKey("TeamLeadId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("TeamLead");
-                });
-
             modelBuilder.Entity("InternProject.Domain.Entities.User", b =>
                 {
                     b.HasOne("InternProject.Domain.Entities.Team", "Team")
                         .WithMany("Users")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("TeamId");
 
                     b.Navigation("Team");
                 });

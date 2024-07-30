@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace InternProject.Domain.Entities
+namespace InternProject.Application.DTOs
 {
-    public class Category : BaseEntity
+    public class UpdateCategoryDto
     {
-        public int Id { get; set; }
         public string Name { get; set; }
-        public List<Education> Educations { get; set; }
+        public DateTime UpdatedDate { get; set; }   
     }
 }

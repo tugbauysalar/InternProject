@@ -1,5 +1,6 @@
 using AutoMapper;
 using FluentValidation.AspNetCore;
+using InternProject.Application;
 using InternProject.Application.Mapping;
 using InternProject.Application.Services;
 using InternProject.Domain.Entities;
@@ -26,7 +27,7 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opts =>
 {
-    var tokenOption = builder.Configuration.GetSection("TokenOption").Get<CustomTokenOption>();
+    var tokenOption = builder.Configuration.GetSection("Token Option").Get<CustomTokenOption>();
     opts.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
     {
         ValidIssuer = tokenOption.Issuer,
@@ -56,6 +57,7 @@ builder.Services.AddIdentity<User, Role>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddScoped<IUnitofWork, UnitofWork>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();

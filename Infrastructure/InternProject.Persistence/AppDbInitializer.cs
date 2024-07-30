@@ -38,7 +38,6 @@ namespace InternProject.Persistence
                 Password = adminPassword
             };
 
-            
             var user = await userManager.FindByEmailAsync("admin@gmail.com");
 
             if (user == null)

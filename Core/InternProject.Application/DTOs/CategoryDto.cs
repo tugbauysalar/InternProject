@@ -9,5 +9,6 @@ namespace InternProject.Application.DTOs
     public class CategoryDto
     {
         public string Name { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

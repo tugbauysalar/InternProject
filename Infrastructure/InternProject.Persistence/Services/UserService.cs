@@ -16,13 +16,11 @@ namespace InternProject.Persistence.Services
     {
         private readonly IMapper _mapper;
         private readonly UserManager<User> _manager;
-        private readonly AppDbContext _context;
 
-        public UserService(UserManager<User> manager, IMapper mapper, AppDbContext context)
+        public UserService(UserManager<User> manager, IMapper mapper)
         {
             _manager = manager;
             _mapper = mapper;
-            _context = context;
         }
 
         public async Task<CustomResponseDto<UserDto>> CreateUserAsync(CreateUserDto createUserDto)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace InternProject.Domain.Entities
 {
-    public class Education
+    public class Education : BaseEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }

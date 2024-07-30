@@ -1,4 +1,5 @@
-﻿using InternProject.Application.DTOs;
+﻿using InternProject.Application;
+using InternProject.Application.DTOs;
 using InternProject.Application.Services;
 using InternProject.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -16,14 +17,15 @@ namespace InternProject.Persistence.Services
         private readonly ITokenService _tokenService;
         private readonly UserManager<User> _userManager;
         private readonly IService<UserRefreshToken> _userRefreshTokenService;
-        private readonly AppDbContext _context;
+        private readonly IUnitofWork _unitOfWork;
 
-        public AuthService(UserManager<User> userManager, IService<UserRefreshToken> userRefreshTokenService, ITokenService tokenService, AppDbContext context)
+        public AuthService(UserManager<User> userManager, IService<UserRefreshToken> userRefreshTokenService, 
+            ITokenService tokenService, IUnitofWork unitOfWork)
         {
             _userManager = userManager;
             _userRefreshTokenService = userRefreshTokenService;
             _tokenService = tokenService;
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<CustomResponseDto<TokenDto>> CreateRefreshTokenAsync(string refreshToken)
@@ -45,7 +47,7 @@ namespace InternProject.Persistence.Services
             existRefreshToken.RefreshToken = tokenDto.RefreshToken;
             existRefreshToken.Expiration = tokenDto.RefreshTokenExpiration.ToUniversalTime();
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.CommitAsync();
 
             return CustomResponseDto<TokenDto>.Success(200, tokenDto);
         }
@@ -80,7 +82,7 @@ namespace InternProject.Persistence.Services
                 userRefreshToken.Expiration = token.RefreshTokenExpiration.ToUniversalTime();
             }
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.CommitAsync();
 
             return CustomResponseDto<TokenDto>.Success(200, token);
         }
