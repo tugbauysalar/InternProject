@@ -36,8 +36,8 @@ namespace InternProject.API.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteEducation(int id)
         {
-            var education = await _service.DeleteEducation(id);
-            return Ok(education);   
+            await _service.DeleteEducation(id);
+            return Ok();   
         }
     }
 }

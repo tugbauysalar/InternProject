@@ -3,13 +3,6 @@ using InternProject.Application;
 using InternProject.Application.DTOs;
 using InternProject.Application.Services;
 using InternProject.Domain.Entities;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InternProject.Persistence.Services
 {
@@ -18,16 +11,12 @@ namespace InternProject.Persistence.Services
         private readonly IService<Team> _service;
         private readonly IUnitofWork _unitofwork;
         private readonly IMapper _mapper;
-        private readonly AppDbContext _context;
-        private readonly UserManager<User> _userManager;
 
-        public TeamService(IService<Team> service, IUnitofWork unitofwork, IMapper mapper, AppDbContext context, UserManager<User> userManager)
+        public TeamService(IService<Team> service, IUnitofWork unitofwork, IMapper mapper)
         {
             _service = service;
             _unitofwork = unitofwork;
             _mapper = mapper;
-            _context = context;
-            _userManager = userManager;
         }
 
         public async Task<string> AssignTeamLeadAsync(int teamId, string teamLeadId)
@@ -52,18 +41,12 @@ namespace InternProject.Persistence.Services
             return dto;
         }
 
-        public async Task<string> DeleteTeam(int id)
+        public async Task DeleteTeam(int id)
         {
             var team = await _service.GetByIdAsync(id);
-            if (team == null || team.IsDeleted)
-            {
-                return "Silinmek istenen takım bulunamadı!";
-            }
             team.DeletedDate = DateTime.UtcNow;
             team.IsDeleted = true;
             await _unitofwork.CommitAsync();
-            return "Takım başarıyla silindi!";
-
         }
 
         public async Task<UpdateTeamDto> UpdateTeam(int id, UpdateTeamDto dto)

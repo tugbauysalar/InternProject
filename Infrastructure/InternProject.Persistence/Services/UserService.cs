@@ -51,15 +51,10 @@ namespace InternProject.Persistence.Services
             return CustomResponseDto<UserDto>.Success(200, _mapper.Map<UserDto>(user));
         }
 
-        public async Task<string> DeleteUserAsync(string id)
+        public async Task DeleteUserAsync(string id)
         {
             var user = await _manager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return "Kullanıcı bulunamadı!";
-            }
             await _manager.DeleteAsync(user);
-            return "Kullanıcı silindi!";
         }
 
         public async Task<CustomResponseDto<UserDto>> UpdateUserAsync(string id, UpdateUserDto userDto)

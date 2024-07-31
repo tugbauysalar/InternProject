@@ -1,4 +1,5 @@
 ﻿using InternProject.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,7 @@ namespace InternProject.API.Controllers
             _roleManager = roleManager;
         }
 
+        
         [HttpPost]
         public async Task<IActionResult> AssignRolesToUser(string userId, [FromBody] string[] roleIds)
         {

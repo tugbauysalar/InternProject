@@ -11,6 +11,6 @@ namespace InternProject.Application.Services
     {
         Task<CreateEducationDto> CreateEducation(CreateEducationDto dto);
         Task<UpdateEducationDto> UpdateEducation(int id, UpdateEducationDto dto);
-        Task<string> DeleteEducation(int id);
+        Task DeleteEducation(int id);
     }
 }

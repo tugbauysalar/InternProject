@@ -11,7 +11,7 @@ namespace InternProject.Application.Services
     {
         Task<CreateTeamDto> CreateTeam(CreateTeamDto dto);
         Task<UpdateTeamDto> UpdateTeam(int id, UpdateTeamDto dto);
-        Task<string> DeleteTeam(int id);
+        Task DeleteTeam(int id);
         Task<string> AssignTeamLeadAsync(int teamId, string teamLeadId);
     }
 }

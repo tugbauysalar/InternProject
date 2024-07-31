@@ -31,17 +31,12 @@ namespace InternProject.Persistence.Services
             return dto; 
         }
 
-        public async Task<string> DeleteEducation(int id)
+        public async Task DeleteEducation(int id)
         {
             var education = await _service.GetByIdAsync(id);
-            if ( education == null || education.IsDeleted )
-            {
-                return "Silinmek istenen eğitim bulunamadı!";
-            }
             education.DeletedDate = DateTime.Now;
             education.IsDeleted = true;
             await _unitofwork.CommitAsync();
-            return "Eğitim başarıyla silindi!";
         }
 
         public async Task<UpdateEducationDto> UpdateEducation(int id, UpdateEducationDto dto)

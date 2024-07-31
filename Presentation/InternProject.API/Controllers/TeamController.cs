@@ -2,11 +2,9 @@
 using InternProject.Application.Services;
 using InternProject.Domain.Entities;
 using InternProject.Persistence;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Security.AccessControl;
+
 
 namespace InternProject.API.Controllers
 {
@@ -61,8 +59,8 @@ namespace InternProject.API.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteTeam(int id)
         {
-            var team = await _teamService.DeleteTeam(id);
-            return Ok(team);
+            await _teamService.DeleteTeam(id);
+            return Ok();
         }
     }
 }

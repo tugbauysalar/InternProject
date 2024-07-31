@@ -42,7 +42,8 @@ namespace InternProject.API.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteUser(string id)
         {
-            return Ok(await _userService.DeleteUserAsync(id));
+            await _userService.DeleteUserAsync(id);
+            return Ok();
         }
     }
 }

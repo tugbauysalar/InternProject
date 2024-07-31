@@ -11,6 +11,6 @@ namespace InternProject.Application.Services
     {
         Task<CustomResponseDto<UserDto>> CreateUserAsync(CreateUserDto createUserDto);
         Task<CustomResponseDto<UserDto>> UpdateUserAsync(string id , UpdateUserDto userDto);
-        Task<string> DeleteUserAsync(string id);
+        Task DeleteUserAsync(string id);
     }
 }
