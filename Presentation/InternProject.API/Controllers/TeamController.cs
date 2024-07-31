@@ -1,7 +1,11 @@
 ﻿using InternProject.Application.DTOs;
 using InternProject.Application.Services;
+using InternProject.Domain.Entities;
+using InternProject.Persistence;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.AccessControl;
 
 namespace InternProject.API.Controllers
@@ -11,15 +15,31 @@ namespace InternProject.API.Controllers
     public class TeamController : CustomBaseController
     {
         private readonly ITeamService _teamService;
+        private readonly AppDbContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public TeamController(ITeamService teamService)
+        public TeamController(ITeamService teamService, AppDbContext context, UserManager<User> userManager)
         {
             _teamService = teamService;
+            _context = context;
+            _userManager = userManager;
         }
 
         [HttpPut]
         public async Task<IActionResult> AssignTeamLead(int teamId, string leadId)
         {
+
+            var teamLead = await _context.Users.FindAsync(leadId);
+            if (teamLead == null)
+            {
+                return NotFound("Kullanıcı bulunamadı!");
+            }
+
+            var role = await _userManager.GetRolesAsync(teamLead);
+            if (!role.Contains("Team Lead"))
+            {
+                return  BadRequest("Takıma eklemek istediğiniz kişi Team Lead rolüne sahip değil!");
+            }
             var result = await _teamService.AssignTeamLeadAsync(teamId, leadId);
             return Ok(result);
         }

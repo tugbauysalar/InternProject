@@ -33,21 +33,9 @@ namespace InternProject.Persistence.Services
         public async Task<string> AssignTeamLeadAsync(int teamId, string teamLeadId)
         {
             var team = await _service.GetByIdAsync(teamId);
-            if(team==null || team.IsDeleted)
+            if (team == null || team.IsDeleted)
             {
                 return "Takım bulunamadı!";
-            }
-
-            var teamLead = await _context.Users.FindAsync(teamLeadId);
-            if (teamLead == null)
-            {
-                return "Kullanıcı bulunamadı!";
-            }
-
-            var role = await _userManager.GetRolesAsync(teamLead);
-            if (!role.Contains("Team Lead"))
-            {
-                return "Takıma eklemek istediğiniz kişi Team Lead rolüne sahip değil!";
             }
 
             team.TeamLeadId = teamLeadId;
@@ -57,7 +45,7 @@ namespace InternProject.Persistence.Services
             return "Takım lideri başarıyla eklendi!";
         }
 
-        public async Task<CreateTeamDto> CreateTeam(CreateTeamDto dto) 
+        public async Task<CreateTeamDto> CreateTeam(CreateTeamDto dto)
         {
             await _service.AddAsync(_mapper.Map<Team>(dto));
             await _unitofwork.CommitAsync();
@@ -67,7 +55,7 @@ namespace InternProject.Persistence.Services
         public async Task<string> DeleteTeam(int id)
         {
             var team = await _service.GetByIdAsync(id);
-            if(team == null || team.IsDeleted)
+            if (team == null || team.IsDeleted)
             {
                 return "Silinmek istenen takım bulunamadı!";
             }
