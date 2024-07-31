@@ -10,6 +10,6 @@ namespace InternProject.Application.Services
 {
     public interface ITokenService
     {
-        TokenDto CreateToken(User user); 
+        Task<TokenDto> CreateTokenAsync(User user); 
     }
 }

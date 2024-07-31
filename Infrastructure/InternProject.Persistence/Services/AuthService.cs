@@ -19,7 +19,7 @@ namespace InternProject.Persistence.Services
         private readonly IService<UserRefreshToken> _userRefreshTokenService;
         private readonly IUnitofWork _unitOfWork;
 
-        public AuthService(UserManager<User> userManager, IService<UserRefreshToken> userRefreshTokenService, 
+        public AuthService(UserManager<User> userManager, IService<UserRefreshToken> userRefreshTokenService,
             ITokenService tokenService, IUnitofWork unitOfWork)
         {
             _userManager = userManager;
@@ -42,7 +42,7 @@ namespace InternProject.Persistence.Services
                 return CustomResponseDto<TokenDto>.Error(404, "Kullanıcı bulunamadı!");
             }
 
-            var tokenDto = _tokenService.CreateToken(user);
+            var tokenDto = await _tokenService.CreateTokenAsync(user);
 
             existRefreshToken.RefreshToken = tokenDto.RefreshToken;
             existRefreshToken.Expiration = tokenDto.RefreshTokenExpiration.ToUniversalTime();
@@ -64,7 +64,7 @@ namespace InternProject.Persistence.Services
                 return CustomResponseDto<TokenDto>.Error(400, "E-posta veya şifre yanlış!");
             }
 
-            var token = _tokenService.CreateToken(user);
+            var token = await _tokenService.CreateTokenAsync(user);
 
             var userRefreshToken = await _userRefreshTokenService.Where(x => x.UserId == user.Id).SingleOrDefaultAsync();
             if (userRefreshToken == null)
