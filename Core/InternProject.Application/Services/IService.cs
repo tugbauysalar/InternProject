@@ -13,5 +13,6 @@ namespace InternProject.Application.Services
         Task AddAsync(TEntity entity);
         Task DeleteAsync(TEntity entity);
         Task<TEntity> GetByIdAsync(int id);
+        void Update(TEntity entity);
     }
 }

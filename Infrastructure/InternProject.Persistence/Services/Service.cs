@@ -35,6 +35,11 @@ namespace InternProject.Persistence.Services
             return await _dbSet.FindAsync(id);
         }
 
+        public void Update(TEntity entity)
+        {
+            _dbSet.Update(entity);
+        }
+
         public IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression)
         {
             return _dbSet.Where(expression);

@@ -5,7 +5,6 @@ using InternProject.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace InternProject.API.Controllers
 {
 
@@ -21,6 +20,24 @@ namespace InternProject.API.Controllers
             _teamService = teamService;
             _context = context;
             _userManager = userManager;
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> AddUserToTeam(int teamId, string userId)
+        {
+            var team = await _context.Teams.FindAsync(teamId);
+            if (team == null || team.IsDeleted)
+            {
+                return NotFound("Takım bulunamadı!");
+            }
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound("Kullanıcı bulunamadı!");
+            }
+
+            await _teamService.AddUserToTeam(teamId, userId);
+            return Ok();
         }
 
         [HttpPut]
@@ -61,6 +78,17 @@ namespace InternProject.API.Controllers
         {
             await _teamService.DeleteTeam(id);
             return Ok();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUsersInTeam(int id)
+        {
+            var users = await _teamService.GetUsersInTeam(id);
+            if (users == null || !users.Any())
+            {
+                return NotFound("Takım bulunamadı veya takımda kullanıcı yok!");
+            }
+            return Ok(users);
         }
     }
 }

@@ -13,5 +13,7 @@ namespace InternProject.Application.Services
         Task<UpdateTeamDto> UpdateTeam(int id, UpdateTeamDto dto);
         Task DeleteTeam(int id);
         Task<string> AssignTeamLeadAsync(int teamId, string teamLeadId);
+        Task AddUserToTeam(int teamId, string userId);
+        Task<List<UserDto>> GetUsersInTeam(int teamId);
     }
 }
