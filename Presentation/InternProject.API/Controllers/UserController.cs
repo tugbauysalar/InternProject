@@ -1,7 +1,6 @@
 ﻿using InternProject.Application.DTOs;
 using InternProject.Application.Services;
 using InternProject.Application.Validations;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InternProject.API.Controllers
@@ -44,6 +43,20 @@ namespace InternProject.API.Controllers
         {
             await _userService.DeleteUserAsync(id);
             return Ok();
+        }
+
+        [HttpPut("addskills")]
+        public async Task<IActionResult> AddSkillsToUser(string userId, List<string> skills)
+        {
+            await _userService.AddSkillsToUser(userId, skills);
+            return Ok();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUserById(string id)
+        {
+            var user = await _userService.GetUserAsync(id);
+            return Ok(user);
         }
     }
 }
