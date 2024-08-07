@@ -5,7 +5,6 @@ using InternProject.Application.Services;
 using InternProject.Domain.Entities;
 using Microsoft.AspNetCore.SignalR;
 
-
 namespace InternProject.Persistence.Services
 {
     public class EducationService : IEducationService
@@ -60,6 +59,19 @@ namespace InternProject.Persistence.Services
             education.DeletedDate = DateTime.UtcNow;
             education.IsDeleted = true;
             await _unitofwork.CommitAsync();
+        }
+
+        public List<EducationAssignmentDto> GetUserEducationAssignments(string userId)
+        {
+            var assignments = _context.EducationAssignments
+                .Where(x => x.UserId == userId)
+                .Select(x=>new EducationAssignmentDto
+                {
+                    EducationName = x.Education.Name,
+                    AssignedDate = x.AssignedDate,
+                    CompletionDate = x.CompletionDate,
+                }).ToList();
+            return assignments;
         }
 
         public async Task<UpdateEducationDto> UpdateEducation(int id, UpdateEducationDto dto)

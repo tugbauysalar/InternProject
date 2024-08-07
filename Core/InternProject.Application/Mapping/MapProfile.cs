@@ -24,6 +24,7 @@ namespace InternProject.Application.Mapping
             CreateMap<Education, CreateEducationDto>().ReverseMap();
             CreateMap<Education,  UpdateEducationDto>().ReverseMap();
             CreateMap<Education, EducationDto>().ReverseMap();
+            CreateMap<EducationAssignment, EducationAssignmentDto>().ReverseMap();  
         }
     }
 }

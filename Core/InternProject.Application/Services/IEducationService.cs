@@ -6,6 +6,7 @@ namespace InternProject.Application.Services
     {
         Task<CreateEducationDto> CreateEducation(CreateEducationDto dto);
         Task<UpdateEducationDto> UpdateEducation(int id, UpdateEducationDto dto);
+        List<EducationAssignmentDto> GetUserEducationAssignments(string userId);
         Task AssignEducationToUser(string userId, int educationId, int day);
         Task DeleteEducation(int id);
     }

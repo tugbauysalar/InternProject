@@ -57,6 +57,18 @@ namespace InternProject.API.Controllers
             return Ok(educationDtos);
         }
 
+        [HttpGet("user-assignments")]
+        public IActionResult GetUserEducationAssignments(string id)
+        {
+            var assignments = _service.GetUserEducationAssignments(id);
+            if (assignments.Count == 0)
+            {
+                return NotFound("Kullanıcıya ait eğitim bulunamadı!");
+            }
+                
+            return Ok(assignments);
+        }
+
         [HttpPost("assign")]
         public async Task<IActionResult> AssignEducation(string userId, int educationId, int day)
         {
