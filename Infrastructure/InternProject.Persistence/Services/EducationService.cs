@@ -3,11 +3,8 @@ using InternProject.Application;
 using InternProject.Application.DTOs;
 using InternProject.Application.Services;
 using InternProject.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR;
+
 
 namespace InternProject.Persistence.Services
 {
@@ -16,12 +13,38 @@ namespace InternProject.Persistence.Services
         private readonly IService<Education> _service;
         private readonly IMapper _mapper;
         private readonly IUnitofWork _unitofwork;
+        private readonly AppDbContext _context;
+        private readonly IHubContext<MyHub> _hubContext;
 
-        public EducationService(IService<Education> service, IMapper mapper, IUnitofWork unitofWork)
+        public EducationService(IService<Education> service, IMapper mapper, IUnitofWork unitofWork, 
+            AppDbContext context, IHubContext<MyHub> hubContext)
         {
             _service = service;
             _mapper = mapper;
             _unitofwork = unitofWork;
+            _context = context;
+            _hubContext = hubContext;
+        }
+
+        public async Task AssignEducationToUser(string userId, int educationId, int day)
+        {
+            var education = await _context.Educations.FindAsync(educationId);
+            var assignedDate = DateTime.UtcNow;
+            var completionDate = assignedDate.AddDays(day);
+            var educationAssignment = new EducationAssignment
+            {
+                UserId = userId,
+                EducationId = educationId,
+                Education = education,
+                AssignedDate = assignedDate,
+                CompletionDate = completionDate
+            };
+            _context.EducationAssignments.Add(educationAssignment);
+            await _unitofwork.CommitAsync();
+
+            var message = $"Atanan eğitim: {education.Name}, bitirme tarihi: {completionDate.ToShortDateString()}";
+
+            await _hubContext.Clients.User(userId).SendAsync("ReceiveMessage", message);
         }
 
         public async Task<CreateEducationDto> CreateEducation(CreateEducationDto dto)
@@ -34,7 +57,7 @@ namespace InternProject.Persistence.Services
         public async Task DeleteEducation(int id)
         {
             var education = await _service.GetByIdAsync(id);
-            education.DeletedDate = DateTime.Now;
+            education.DeletedDate = DateTime.UtcNow;
             education.IsDeleted = true;
             await _unitofwork.CommitAsync();
         }
@@ -43,8 +66,9 @@ namespace InternProject.Persistence.Services
         {
             var education = await _service.GetByIdAsync(id);
             education.Name = dto.Name;
+            education.Description = dto.Description;
             education.CategoryId = dto.CategoryId;
-            education.UpdatedDate = DateTime.Now;
+            education.UpdatedDate = DateTime.UtcNow;
             await _unitofwork.CommitAsync();
             return dto;
         }

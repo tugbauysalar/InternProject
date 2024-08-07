@@ -18,10 +18,12 @@ namespace InternProject.Application.Mapping
             CreateMap<User, UserLoginDto>();
             CreateMap<Category, CategoryDto>().ReverseMap();
             CreateMap<Category, UpdateCategoryDto>().ReverseMap();
+            CreateMap<Category, GetCategoryDto>().ReverseMap();
             CreateMap<Team, CreateTeamDto>().ReverseMap();
             CreateMap<Team, UpdateTeamDto>().ReverseMap();
             CreateMap<Education, CreateEducationDto>().ReverseMap();
             CreateMap<Education,  UpdateEducationDto>().ReverseMap();
+            CreateMap<Education, EducationDto>().ReverseMap();
         }
     }
 }

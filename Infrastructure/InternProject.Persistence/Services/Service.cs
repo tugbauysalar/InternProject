@@ -30,6 +30,7 @@ namespace InternProject.Persistence.Services
             _dbSet.Remove(entity);
             await _appDbContext.SaveChangesAsync();
         }
+
         public async Task<TEntity> GetByIdAsync(int id)
         {
             return await _dbSet.FindAsync(id);

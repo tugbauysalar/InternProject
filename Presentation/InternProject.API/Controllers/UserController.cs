@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InternProject.API.Controllers
 {
-    public class UserController : CustomBaseController
+    [Route("api/[controller]/[action]")]
+    [ApiController]
+    public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
 
@@ -23,10 +25,10 @@ namespace InternProject.API.Controllers
                 var errors = validationResult.Errors.Select(x => x.ErrorMessage).ToList();
                 return BadRequest(new { errors });
             }
-            return CreateIActionResult(await _userService.CreateUserAsync(createUserDto));
+            return Ok(await _userService.CreateUserAsync(createUserDto));
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(string id, UpdateUserDto userDto)
         {
             var validationResult = new UpdateUserDtoValidator().Validate(userDto);
@@ -35,24 +37,24 @@ namespace InternProject.API.Controllers
                 var errors = validationResult.Errors.Select(x => x.ErrorMessage).ToList();
                 return BadRequest(new { errors });
             }
-            return CreateIActionResult(await _userService.UpdateUserAsync(id, userDto));
+            return Ok(await _userService.UpdateUserAsync(id, userDto));
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(string id)
         {
             await _userService.DeleteUserAsync(id);
             return Ok();
         }
 
-        [HttpPut("addskills")]
+        [HttpPut()]
         public async Task<IActionResult> AddSkillsToUser(string userId, List<string> skills)
         {
             await _userService.AddSkillsToUser(userId, skills);
             return Ok();
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(string id)
         {
             var user = await _userService.GetUserAsync(id);

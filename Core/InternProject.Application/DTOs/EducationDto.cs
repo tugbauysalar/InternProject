@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace InternProject.Application.DTOs
 {
-    public class CreateEducationDto
+    public class EducationDto
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public int CategoryId { get; set; }
     }
 }

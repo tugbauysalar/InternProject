@@ -10,7 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace InternProject.API.Controllers
 {
     [Route("api/[controller]/[action]")]
-    public class AuthController : CustomBaseController
+    [ApiController]
+    public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
         private readonly UserManager<User> _userManager;
@@ -31,14 +32,14 @@ namespace InternProject.API.Controllers
                 return BadRequest(new { errors });
             }
             var result = await _authService.CreateTokenAsync(userLoginDto);
-            return CreateIActionResult(result);
+            return Ok(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateRefreshToken(RefreshTokenDto refreshTokenDto)
         {
             var result = await _authService.CreateRefreshTokenAsync(refreshTokenDto.Token);
-            return CreateIActionResult(result);
+            return Ok(result);
         }
     }
 }

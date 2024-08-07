@@ -3,15 +3,14 @@ using InternProject.Application;
 using InternProject.Application.DTOs;
 using InternProject.Application.Services;
 using InternProject.Domain.Entities;
-using InternProject.Persistence;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace InternProject.API.Controllers
 {
-    public class CategoryController : CustomBaseController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CategoryController : ControllerBase
     {
         private readonly IService<Category> _service;
         private readonly IMapper _mapper;
@@ -33,7 +32,7 @@ namespace InternProject.API.Controllers
             return Ok(categoryDto);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UpdateCategoryDto categoryDto)
         {
             var category = await _service.GetByIdAsync(id);
@@ -59,6 +58,14 @@ namespace InternProject.API.Controllers
             category.IsDeleted = true;
             await _unitOfWork.CommitAsync();
             return Ok("Kategori silindi!");
+        }
+
+        [HttpGet("all")]
+        public async Task<ActionResult<IEnumerable<GetCategoryDto>>> GetAllCategories()
+        {
+            var categories = await _service.Where(x => x.IsDeleted == false).ToListAsync();
+            var categoryDtos = _mapper.Map<List<GetCategoryDto>>(categories);
+            return Ok(categoryDtos);
         }
 
         [HttpGet]

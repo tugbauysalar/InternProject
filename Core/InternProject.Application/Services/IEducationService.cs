@@ -1,9 +1,4 @@
 ﻿using InternProject.Application.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InternProject.Application.Services
 {
@@ -11,6 +6,7 @@ namespace InternProject.Application.Services
     {
         Task<CreateEducationDto> CreateEducation(CreateEducationDto dto);
         Task<UpdateEducationDto> UpdateEducation(int id, UpdateEducationDto dto);
+        Task AssignEducationToUser(string userId, int educationId, int day);
         Task DeleteEducation(int id);
     }
 }
